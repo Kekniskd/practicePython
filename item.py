@@ -1,7 +1,6 @@
 import csv
 
 
-
 class Item:
     pay_rate = 0.8 # Pay rate after 20% discount
     all = []
@@ -11,12 +10,20 @@ class Item:
         assert quantity >= 0, f"Price {quantity} is not greater than 0!"
 
         # Assign to self object
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
 
         # Actions to execute
         Item.all.append(self)
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        self.__name = value
 
     def calculateTotalQuantity(self) -> int:
         return self.price * self.quantity
@@ -25,7 +32,7 @@ class Item:
         self.price = self.price * self.pay_rate
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls) -> None:
         with open('classesItemCSV.csv', 'r') as f:
             reader = csv.DictReader(f)
             items = list(reader)
@@ -36,8 +43,9 @@ class Item:
                 price=float(item.get('price')),
                 quantity=int(item.get('quantity')),
             )
+
     @staticmethod
-    def is_integer(num):
+    def is_integer(num) -> bool:
         # We will count out float that are point zero
         # For i.e: 5.0, 10.0
         if isinstance(num, float):
@@ -49,6 +57,4 @@ class Item:
             return False
 
     def __repr__(self) -> str:
-        return f"Item('{self.name}', {self.price}, {self.quantity})"
-
-print(Item.is_integer(7.5))
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
