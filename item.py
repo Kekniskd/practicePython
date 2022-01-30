@@ -11,25 +11,32 @@ class Item:
 
         # Assign to self object
         self.__name = name
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
         # Actions to execute
         Item.all.append(self)
 
     @property
+    def price(self):
+        return self.__price
+
+    def apply_discount(self) -> None:
+        self.__price = self.__price * self.pay_rate
+
+    def apply_increament(self, incre_value) -> None:
+        self.__price = self.__price + self.__price * incre_value
+
+    @property
     def name(self) -> str:
         return self.__name
 
     @name.setter
-    def name(self, value):
+    def name(self, value) -> None:
         self.__name = value
 
-    def calculateTotalQuantity(self) -> int:
-        return self.price * self.quantity
-
-    def apply_discount(self) -> None:
-        self.price = self.price * self.pay_rate
+    def calculateTotalPrice(self) -> int:
+        return self.__price * self.quantity
 
     @classmethod
     def instantiate_from_csv(cls) -> None:
@@ -39,8 +46,8 @@ class Item:
         
         for item in items:
             Item(
-                name=item.get('name'),
-                price=float(item.get('price')),
+                __name=item.get('name'),
+                __price=float(item.get('price')),
                 quantity=int(item.get('quantity')),
             )
 
@@ -57,4 +64,21 @@ class Item:
             return False
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self.name}', {self.__price}, {self.quantity})"
+
+    def __connect(self, smto_server) -> None:
+        pass
+
+    def __prepare_body(self) -> str:
+        return f"""
+        Hello Someone.
+        we have {self.name} {self.quantity} times.
+        """
+
+    def __send(self) -> None:
+        pass
+
+    def send_email(self) -> None:
+        self.__connect('')
+        self.__prepare_body()
+        self.__send()

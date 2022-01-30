@@ -1,7 +1,5 @@
-from item import Item
+from phone import Phone
 
-
-item1 = Item("MyItem", 750)
-
-item1.name = "OtherItem"
-print(item1.name)
+item1 = Phone("MyItem", 750)
+item1.apply_increament(0.2)
+print(item1.price)
